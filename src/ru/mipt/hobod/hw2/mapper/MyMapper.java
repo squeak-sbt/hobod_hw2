@@ -23,7 +23,7 @@ public class MyMapper extends Mapper<LongWritable, Text, Text, Text> {
 
         for (String field : fields) {
             String[] attribute = field.split("=");
-            if (attribute.length == 0) {
+            if (attribute.length < 2) {
                 continue;
             }
             if (attribute[0].equals("Id")) {

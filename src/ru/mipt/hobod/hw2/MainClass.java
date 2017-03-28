@@ -39,7 +39,7 @@ public class MainClass extends Configured implements Tool {
         job.setOutputFormatClass(TextOutputFormat.class);
 
         job.setOutputKeyClass(Text.class);
-        job.setOutputValueClass(NullWritable.class);
+        job.setOutputValueClass(Text.class);
 
         job.setNumReduceTasks(8);
 
