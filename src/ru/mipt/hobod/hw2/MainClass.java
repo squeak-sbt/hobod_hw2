@@ -34,7 +34,7 @@ public class MainClass extends Configured implements Tool {
 
         job.setJarByClass(MainClass.class);
 
-        job.setMapperClass(MyMapper.class);
+        //job.setMapperClass(MyMapper.class);
         job.setReducerClass(MyReducer.class);
 
         //job.setInputFormatClass(TextInputFormat.class);
@@ -43,7 +43,7 @@ public class MainClass extends Configured implements Tool {
         job.setMapOutputKeyClass(Text.class);
         job.setMapOutputValueClass(Text.class);
 
-        job.setNumReduceTasks(8);
+        job.setNumReduceTasks(4);
 
 
 

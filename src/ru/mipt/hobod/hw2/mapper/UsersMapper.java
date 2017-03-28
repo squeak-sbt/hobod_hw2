@@ -21,10 +21,10 @@ public class UsersMapper extends Mapper<LongWritable, Text, Text, Text> {
             if (fields.length < 2) {
                 continue;
             }
-            if (fields[0].toLowerCase().equals("reputation")) {
+            if (fields[0].equals("Reputation")) {
                 reputation = fields[1].replace("\"", "");
             }
-            if (fields[0].toLowerCase().equals("id")) {
+            if (fields[0].equals("Id")) {
                 id = fields[1].replace("\"", "");
             }
         }

@@ -46,17 +46,17 @@ public class MyMapper extends Mapper<LongWritable, Text, Text, Text> {
             }
         }
         if (reputation != null) { //It is USER
-            context.write(new Text(id), new Text("3," + reputation));
+            context.write(new Text(id), new Text("U," + reputation));
         }
         else if (postTypeId != null) {
             if (postTypeId.equals("1")) { // IT is QUESTION
                 if (ownerId != null) {
-                    context.write(new Text(ownerId), new Text("1," + id));
+                    context.write(new Text(ownerId), new Text("Q," + id));
                 }
             }
             else if (postTypeId.equals("2")) {
                 if (ownerId != null && score != null && parentId != null) {
-                    context.write(new Text(ownerId), new Text("2," + parentId + "," + score));
+                    context.write(new Text(ownerId), new Text("A," + parentId + "," + score));
                 }
             }
         }

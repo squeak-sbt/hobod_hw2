@@ -19,17 +19,16 @@ public class PostsMapper extends Mapper<LongWritable, Text, Text, Text> {
             if (fields.length < 2) {
                 continue;
             }
-            fields[0] = fields[0].toLowerCase();
-            if (fields[0].equals("posttypeid")) {
+            if (fields[0].equals("PostTypeId")) {
                 type = fields[1].replace("\"", "");
             }
-            if (fields[0].equals("ownerid")) {
+            if (fields[0].equals("OwnerId")) {
                 ownerId = fields[1];
             }
-            if (fields[0].equals("parentid")) {
+            if (fields[0].equals("ParentId")) {
                 parentId = fields[1];
             }
-            if (fields[0].equals("score")) {
+            if (fields[0].equals("Score")) {
                 score = fields[1];
             }
         }
