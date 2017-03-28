@@ -16,10 +16,10 @@ public class PostsMapper extends Mapper<LongWritable, Text, Text, Text> {
         String type = null, ownerId = null, parentId = null, score = null;
         for (String attribute : attributes) {
             String[] fields = attribute.split("=");
-            fields[0] = fields[0].toLowerCase();
             if (fields.length < 2) {
                 continue;
             }
+            fields[0] = fields[0].toLowerCase();
             if (fields[0].equals("posttypeid")) {
                 type = fields[1].replace("\"", "");
             }
