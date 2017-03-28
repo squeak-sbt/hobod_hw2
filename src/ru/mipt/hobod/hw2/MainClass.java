@@ -6,12 +6,15 @@ import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
+import org.apache.hadoop.mapreduce.lib.input.MultipleInputs;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 import ru.mipt.hobod.hw2.mapper.MyMapper;
+import ru.mipt.hobod.hw2.mapper.PostsMapper;
+import ru.mipt.hobod.hw2.mapper.UsersMapper;
 import ru.mipt.hobod.hw2.reducer.MyReducer;
 
 /**
@@ -34,7 +37,7 @@ public class MainClass extends Configured implements Tool {
         job.setMapperClass(MyMapper.class);
         job.setReducerClass(MyReducer.class);
 
-        job.setInputFormatClass(TextInputFormat.class);
+        //job.setInputFormatClass(TextInputFormat.class);
         job.setOutputFormatClass(TextOutputFormat.class);
 
         job.setMapOutputKeyClass(Text.class);
@@ -42,8 +45,12 @@ public class MainClass extends Configured implements Tool {
 
         job.setNumReduceTasks(8);
 
-        FileInputFormat.addInputPath(job, new Path(strings[0]));
-        FileInputFormat.addInputPath(job, new Path(strings[1]));
+
+
+        MultipleInputs.addInputPath(job, new Path(strings[0]), TextInputFormat.class, PostsMapper.class);
+        MultipleInputs.addInputPath(job, new Path(strings[1]), TextInputFormat.class, UsersMapper.class);
+        //FileInputFormat.addInputPath(job, new Path(strings[0]));
+        //FileInputFormat.addInputPath(job, new Path(strings[1]));
         FileOutputFormat.setOutputPath(job, new Path(strings[2]));
 
         job.waitForCompletion(true);

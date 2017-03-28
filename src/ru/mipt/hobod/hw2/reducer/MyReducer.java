@@ -9,7 +9,7 @@ import java.io.IOException;
 /**
  * Created by dmitry on 26.03.17.
  */
-public class MyReducer extends Reducer<Text, Text, Text, NullWritable> {
+public class MyReducer extends Reducer<Text, Text, Text, Text> {
 
     @Override
     protected void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {
@@ -24,8 +24,26 @@ public class MyReducer extends Reducer<Text, Text, Text, NullWritable> {
 
             }
         }*/
-        for (Text value : values) {
+        /*for (Text value : values) {
             context.write(value, NullWritable.get());
+        }*/
+        String reputation = null;
+        boolean found = false;
+        for (Text value : values) {
+            String[] split = value.toString().split(",");
+            if (split[0].equals("U")) {
+                reputation = split[1];
+                found = true;
+                break;
+            }
+        }
+        if (found) {
+            for (Text value : values) {
+                String[] attributes = value.toString().split(",");
+                if (attributes[0].equals("A")) {
+                    context.write(new Text(attributes[1]), new Text(attributes[2] + "\t" + reputation));
+                }
+            }
         }
     }
 }
