@@ -5,14 +5,11 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Created by dmitry on 26.03.17.
  */
 public class MyReducer extends Reducer<Text, Text, Text, NullWritable> {
-    private static volatile Set<String> postSet = new HashSet<>();
 
     @Override
     protected void reduce(Text key, Iterable<Text> values, Context context) throws IOException, InterruptedException {

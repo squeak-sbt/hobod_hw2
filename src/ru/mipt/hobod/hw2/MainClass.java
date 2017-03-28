@@ -41,6 +41,8 @@ public class MainClass extends Configured implements Tool {
         job.setOutputKeyClass(Text.class);
         job.setOutputValueClass(NullWritable.class);
 
+        job.setNumReduceTasks(8);
+
         FileInputFormat.addInputPath(job, new Path(strings[0]));
         FileInputFormat.addInputPath(job, new Path(strings[1]));
         FileOutputFormat.setOutputPath(job, new Path(strings[2]));

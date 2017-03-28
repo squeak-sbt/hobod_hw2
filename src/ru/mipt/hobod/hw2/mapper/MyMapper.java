@@ -3,16 +3,7 @@ package ru.mipt.hobod.hw2.mapper;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Mapper;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.xml.sax.SAXException;
-import ru.mipt.hobod.hw2.entity.TaggedKey;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 
 /**
@@ -22,61 +13,50 @@ public class MyMapper extends Mapper<LongWritable, Text, Text, Text> {
 
     @Override
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-        DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
-        DocumentBuilder documentBuilder;
-        Document document = null;
-        try {
-            documentBuilder = builderFactory.newDocumentBuilder();
-            document = documentBuilder.parse(new ByteArrayInputStream(value.getBytes()));
-        } catch (ParserConfigurationException e) {
-            e.printStackTrace();
-        } catch (SAXException e) {
-            e.printStackTrace();
-        }
-        if (document == null) {
-            return;
-        }
-        Element element = document.getElementById("row");
-        if (element == null) {
-            return;
-        }
+        String[] fields = value.toString().split(" ");
+        String id = null;
+        String postTypeId = null;
+        String ownerId = null;
+        String reputation = null;
+        String score = null;
+        String parentId = null;
 
-        if (!element.hasAttribute("Id")) {
-            return;
-        }
-
-        String id = element.getAttribute("Id");
-
-        if (element.hasAttribute("PostTypeId")) {
-            if (element.hasAttribute("PostTypeId") || element.hasAttribute("Score") || element.hasAttribute("OwnerUserId")) {
-                return;
+        for (String field : fields) {
+            String[] attribute = field.split("=");
+            if (attribute[0].equals("Id")) {
+                id = attribute[1].replace("\"", "");
             }
-            int postTypeId = Integer.valueOf(element.getAttribute("PostTypeId"));
-            int score = Integer.valueOf(element.getAttribute("Score"));
-            String ownerUserId = element.getAttribute("OwnerUserId");
-            if (postTypeId == 2) { //answer
-                if (element.hasAttribute("ParentId")) {
-                    String parentId = element.getAttribute("ParentId");
-                    Text outputKey = new Text(ownerUserId);
-                    Text outputValue = new Text();
-                    outputValue.set("2," + id + "," + score + "," + parentId);
-                    context.write(outputKey, outputValue);
+            if (attribute[0].equals("PostTypeId")) {
+                postTypeId = attribute[1].replace("\"", "");
+            }
+            if (attribute[0].equals("OwnerId")) {
+                ownerId = attribute[1].replace("\"", "");
+            }
+            if (attribute[0].equals("Score")) {
+                score = attribute[1].replace("\"", "");
+            }
+            if (attribute[0].equals("Reputation")) {
+                reputation = attribute[1].replace("\"", "");
+            }
+            if (attribute[0].equals("ParentId")) {
+                parentId = attribute[1].replace("\"", "");
+            }
+        }
+        if (reputation != null) { //It is USER
+            context.write(new Text(id), new Text("3," + reputation));
+        }
+        else if (postTypeId != null) {
+            if (postTypeId.equals("1")) { // IT is QUESTION
+                if (ownerId != null) {
+                    context.write(new Text(ownerId), new Text("1," + id));
                 }
             }
-            else { //question
-                Text outputKey = new Text(ownerUserId);
-                Text outputValue = new Text();
-                outputValue.set("1," + id);
-                context.write(outputKey, outputValue);
+            else if (postTypeId.equals("2")) {
+                if (ownerId != null && score != null && parentId != null) {
+                    context.write(new Text(ownerId), new Text("2," + parentId + "," + score));
+                }
             }
         }
-        else if (element.hasAttribute("Reputation")) { //It is user
-            Text outputKey = new Text(id);
-            Text outputValue = new Text();
-            outputValue.set("3," + element.getAttribute("Reputation"));
-            context.write(outputKey, outputValue);
-        }
-
     }
 
 
