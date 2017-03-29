@@ -34,23 +34,23 @@ public class MainClass extends Configured implements Tool {
 
         job.setJarByClass(MainClass.class);
 
-        //job.setMapperClass(MyMapper.class);
+        job.setMapperClass(MyMapper.class);
         job.setReducerClass(MyReducer.class);
 
-        //job.setInputFormatClass(TextInputFormat.class);
+        job.setInputFormatClass(TextInputFormat.class);
         job.setOutputFormatClass(TextOutputFormat.class);
 
         job.setMapOutputKeyClass(Text.class);
         job.setMapOutputValueClass(Text.class);
 
-        job.setNumReduceTasks(4);
+        job.setNumReduceTasks(0);
 
 
 
-        MultipleInputs.addInputPath(job, new Path(strings[0]), TextInputFormat.class, PostsMapper.class);
-        MultipleInputs.addInputPath(job, new Path(strings[1]), TextInputFormat.class, UsersMapper.class);
-        //FileInputFormat.addInputPath(job, new Path(strings[0]));
-        //FileInputFormat.addInputPath(job, new Path(strings[1]));
+        //MultipleInputs.addInputPath(job, new Path(strings[0]), TextInputFormat.class, PostsMapper.class);
+        //MultipleInputs.addInputPath(job, new Path(strings[1]), TextInputFormat.class, UsersMapper.class);
+        FileInputFormat.addInputPath(job, new Path(strings[0]));
+        FileInputFormat.addInputPath(job, new Path(strings[1]));
         FileOutputFormat.setOutputPath(job, new Path(strings[2]));
 
         job.waitForCompletion(true);

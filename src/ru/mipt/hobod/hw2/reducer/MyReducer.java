@@ -34,6 +34,7 @@ public class MyReducer extends Reducer<Text, Text, Text, Text> {
             if (split[0].equals("U")) {
                 reputation = split[1];
                 found = true;
+                context.write(new Text("SUCCESS"), new Text());
                 break;
             }
         }
