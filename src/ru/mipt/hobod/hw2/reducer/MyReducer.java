@@ -26,7 +26,7 @@ public class MyReducer extends Reducer<Text, Text, Text, Text> {
                     found = true;
                 }
             }
-            else {
+            else if (split[0].equals("A")) {
                 answers.add(split);
             }
         }
