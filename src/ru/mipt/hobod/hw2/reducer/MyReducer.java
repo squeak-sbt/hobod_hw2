@@ -26,16 +26,16 @@ public class MyReducer extends Reducer<Text, Text, Text, Text> {
                     found = true;
                 }
                 else if (split[0].equals("A")) {
-                    answers.add(split);
+                    answers.add(new String[] {split[1], split[2]});
                 }
             }
             else if (split[0].equals("A")) {
-                answers.add(split);
+                answers.add(new String[] {split[1], split[2]});
             }
         }
         if (found) {
             for (String[] attributes : answers) {
-                context.write(new Text(attributes[1]), new Text(attributes[2] + "\t" + reputation));
+                context.write(new Text(attributes[0]), new Text(attributes[1] + "\t" + reputation));
             }
         }
     }
