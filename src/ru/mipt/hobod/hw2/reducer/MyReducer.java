@@ -25,11 +25,11 @@ public class MyReducer extends Reducer<Text, Text, Text, Text> {
                     reputation = split[1];
                     found = true;
                 }
-                else {
+                else if (split[0].equals("A")) {
                     answers.add(split);
                 }
             }
-            else {
+            else if (split[0].equals("A")) {
                 answers.add(split);
             }
         }

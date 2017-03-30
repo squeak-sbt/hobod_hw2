@@ -32,7 +32,7 @@ public class MyMapper extends Mapper<LongWritable, Text, Text, Text> {
             if (attribute[0].equals("PostTypeId")) {
                 postTypeId = attribute[1].replace("\"", "");
             }
-            if (attribute[0].equals("OwnerId")) {
+            if (attribute[0].equals("OwnerUserId")) {
                 ownerId = attribute[1].replace("\"", "");
             }
             if (attribute[0].equals("Score")) {
