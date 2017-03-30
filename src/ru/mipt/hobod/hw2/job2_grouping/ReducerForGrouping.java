@@ -43,7 +43,7 @@ public class ReducerForGrouping extends Reducer<Text, Text, Text, NullWritable> 
         Iterator<ScoreReputation> iteratorScore = maxScoreSet.iterator();
         Iterator<ScoreReputation> iteratorReputation = maxReputationSet.iterator();
         if (iteratorScore.hasNext() && iteratorReputation.hasNext()) {
-            if (iteratorScore.next().equals(iteratorReputation.next())) {
+            if (!iteratorScore.next().equals(iteratorReputation.next())) {
                 context.getCounter(MyCounter.MISMATCH_POSTS).increment(1);
             }
         }
