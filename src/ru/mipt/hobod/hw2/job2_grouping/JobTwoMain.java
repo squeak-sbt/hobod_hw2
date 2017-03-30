@@ -1,41 +1,36 @@
-package ru.mipt.hobod.hw2;
+package ru.mipt.hobod.hw2.job2_grouping;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.conf.Configured;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.io.Text;
+import org.apache.hadoop.mapreduce.Counters;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.lib.input.FileInputFormat;
-import org.apache.hadoop.mapreduce.lib.input.MultipleInputs;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.mapreduce.lib.output.FileOutputFormat;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
-import ru.mipt.hobod.hw2.mapper.MyMapper;
-import ru.mipt.hobod.hw2.mapper.PostsMapper;
-import ru.mipt.hobod.hw2.mapper.UsersMapper;
-import ru.mipt.hobod.hw2.reducer.MyReducer;
 
 /**
- * Created by dmitry on 26.03.17.
+ * Created by dmitry on 30.03.17.
  */
-public class MainClass extends Configured implements Tool {
-
+public class JobTwoMain extends Configured implements Tool {
     public static void main(String[] args) throws Exception {
-        ToolRunner.run(new MainClass(), args);
+        ToolRunner.run(new JobTwoMain(), args);
     }
 
     @Override
     public int run(String[] strings) throws Exception {
         Configuration conf = this.getConf();
         @SuppressWarnings("deprecation")
-            Job job = new Job(conf);
+        Job job = new Job(conf);
 
-        job.setJarByClass(MainClass.class);
+        job.setJarByClass(ru.mipt.hobod.hw2.job2_grouping.JobTwoMain.class);
 
-        job.setMapperClass(MyMapper.class);
-        job.setReducerClass(MyReducer.class);
+        job.setMapperClass(MapperForGrouping.class);
+        job.setReducerClass(ReducerForGrouping.class);
 
         job.setInputFormatClass(TextInputFormat.class);
         job.setOutputFormatClass(TextOutputFormat.class);
@@ -43,17 +38,16 @@ public class MainClass extends Configured implements Tool {
         job.setMapOutputKeyClass(Text.class);
         job.setMapOutputValueClass(Text.class);
 
-        job.setNumReduceTasks(2);
+        job.setNumReduceTasks(4);
 
 
-
-        //MultipleInputs.addInputPath(job, new Path(strings[0]), TextInputFormat.class, PostsMapper.class);
-        //MultipleInputs.addInputPath(job, new Path(strings[1]), TextInputFormat.class, UsersMapper.class);
         FileInputFormat.addInputPath(job, new Path(strings[0]));
-        FileInputFormat.addInputPath(job, new Path(strings[1]));
-        FileOutputFormat.setOutputPath(job, new Path(strings[2]));
+        FileOutputFormat.setOutputPath(job, new Path(strings[1]));
 
         job.waitForCompletion(true);
+
+        Counters counters =  job.getCounters();
+        System.out.println(counters.findCounter(MyCounter.MISMATCH_POSTS).getValue());
 
         return 0;
     }

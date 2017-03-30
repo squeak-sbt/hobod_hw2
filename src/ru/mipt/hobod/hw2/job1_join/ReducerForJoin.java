@@ -1,4 +1,4 @@
-package ru.mipt.hobod.hw2.reducer;
+package ru.mipt.hobod.hw2.job1_join;
 
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapreduce.Reducer;
@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by dmitry on 26.03.17.
  */
-public class MyReducer extends Reducer<Text, Text, Text, Text> {
+public class ReducerForJoin extends Reducer<Text, Text, Text, Text> {
 
 
     @Override

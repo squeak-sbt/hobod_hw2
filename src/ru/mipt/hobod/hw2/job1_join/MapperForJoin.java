@@ -1,4 +1,4 @@
-package ru.mipt.hobod.hw2.mapper;
+package ru.mipt.hobod.hw2.job1_join;
 
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
@@ -9,7 +9,7 @@ import java.io.IOException;
 /**
  * Created by dmitry on 26.03.17.
  */
-public class MyMapper extends Mapper<LongWritable, Text, Text, Text> {
+public class MapperForJoin extends Mapper<LongWritable, Text, Text, Text> {
 
     @Override
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
@@ -55,16 +55,6 @@ public class MyMapper extends Mapper<LongWritable, Text, Text, Text> {
             context.write(new Text(id), new Text("U," + reputation));
         }
         else if (postTypeId != null) {
-            /*if (postTypeId.equals("1")) { // IT is QUESTION
-                if (ownerId != null) {
-                    context.write(new Text(ownerId), new Text("Q," + id));
-                }
-            }
-            else if (postTypeId.equals("2")) {
-                if (ownerId != null && score != null && parentId != null) {
-                    context.write(new Text(ownerId), new Text("A," + parentId + "," + score));
-                }
-            }*/
             if (postTypeId.equals("2")) {
                 if (ownerId != null && score != null && parentId != null) {
                     if (ownerId.length() > 0 && score.length() > 0 && parentId.length() > 0)
