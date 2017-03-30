@@ -13,7 +13,7 @@ public class MyMapper extends Mapper<LongWritable, Text, Text, Text> {
 
     @Override
     protected void map(LongWritable key, Text value, Context context) throws IOException, InterruptedException {
-        String[] fields = value.toString().split("\\s+");
+        String[] fields = value.toString().split(" ");
         String id = null;
         String postTypeId = null;
         String ownerId = null;
