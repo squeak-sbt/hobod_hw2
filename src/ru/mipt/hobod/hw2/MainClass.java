@@ -43,7 +43,7 @@ public class MainClass extends Configured implements Tool {
         job.setMapOutputKeyClass(Text.class);
         job.setMapOutputValueClass(Text.class);
 
-        job.setNumReduceTasks(0);
+        job.setNumReduceTasks(2);
 
 
 
