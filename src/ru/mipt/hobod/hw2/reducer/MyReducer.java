@@ -20,10 +20,11 @@ public class MyReducer extends Reducer<Text, Text, Text, Text> {
         boolean found = false;
         for (Text value : values) {
             String[] split = value.toString().split(",");
-            if (split[0].equals("U")) {
-                reputation = split[1];
-                found = true;
-                break;
+            if (!found) {
+                if (split[0].equals("U")) {
+                    reputation = split[1];
+                    found = true;
+                }
             }
             else {
                 answers.add(split);
