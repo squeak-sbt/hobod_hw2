@@ -46,8 +46,9 @@ public class JobTwoMain extends Configured implements Tool {
 
         job.waitForCompletion(true);
 
-        Counters counters =  job.getCounters();
-        System.out.println(counters.findCounter(MyCounter.MISMATCH_POSTS).getValue());
+        
+        long value = job.getCounters().findCounter(MyCounter.MISMATCH_POSTS).getValue();
+        System.out.println(value);
 
         return 0;
     }
