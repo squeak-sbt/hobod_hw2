@@ -37,7 +37,12 @@ public class MyMapper extends Mapper<LongWritable, Text, Text, Text> {
             }
             if (attribute[0].equals("Score")) {
                 score = attribute[1].replace("\"", "");
-                score = String.valueOf(Integer.valueOf(score));
+                try {
+                    score = String.valueOf(Integer.valueOf(score));
+                }
+                catch (NumberFormatException e) {
+                    score = null;
+                }
             }
             if (attribute[0].equals("Reputation")) {
                 reputation = attribute[1].replace("\"", "");
