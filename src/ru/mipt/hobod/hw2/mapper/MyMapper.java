@@ -37,6 +37,7 @@ public class MyMapper extends Mapper<LongWritable, Text, Text, Text> {
             }
             if (attribute[0].equals("Score")) {
                 score = attribute[1].replace("\"", "");
+                score = String.valueOf(Integer.valueOf(score));
             }
             if (attribute[0].equals("Reputation")) {
                 reputation = attribute[1].replace("\"", "");
@@ -61,7 +62,8 @@ public class MyMapper extends Mapper<LongWritable, Text, Text, Text> {
             }*/
             if (postTypeId.equals("2")) {
                 if (ownerId != null && score != null && parentId != null) {
-                    context.write(new Text(ownerId), new Text("A," + parentId + "," + score));
+                    if (ownerId.length() > 0 && score.length() > 0 && parentId.length() > 0)
+                        context.write(new Text(ownerId), new Text("A," + parentId + "," + score));
                 }
             }
         }

@@ -25,17 +25,17 @@ public class MyReducer extends Reducer<Text, Text, Text, Text> {
                     reputation = split[1];
                     found = true;
                 }
-                else if (split[0].equals("A")) {
-                    answers.add(new String[] {split[1], split[2]});
+                else if (split[0].equals("A") && split.length == 3) {
+                    answers.add(split);
                 }
             }
-            else if (split[0].equals("A")) {
-                answers.add(new String[] {split[1], split[2]});
+            else if (split[0].equals("A") && split.length == 3) {
+                answers.add(split);
             }
         }
         if (found) {
             for (String[] attributes : answers) {
-                context.write(new Text(attributes[0]), new Text(attributes[1] + "\t" + reputation));
+                context.write(new Text(attributes[1]), new Text(attributes[2] + "\t" + reputation));
             }
         }
     }
